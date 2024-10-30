@@ -5,9 +5,13 @@ DEBUG = True
 
 env = environ.Env()
 # reading env file
+# environ.Env.read_env(os.path.join(BASE_DIR, 'truck_signs_designs', 'settings', '.env'))
 environ.Env.read_env()
-
+# print("DB_NAME:", env("DB_NAME"))
+# print("secret key:", env("SECRET_KEY"))
 SECRET_KEY= env("SECRET_KEY")
+
+
 DEBUG = True
 
 CORS_ALLOWED_ORIGINS = [
@@ -15,7 +19,6 @@ CORS_ALLOWED_ORIGINS = [
     "https://signsfortrucks.com",
     "http://localhost:3000",
 ]
-
 
 
 DATABASES = {
@@ -29,10 +32,9 @@ DATABASES = {
     }
 }
 
+
 STRIPE_PUBLISHABLE_KEY=env("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY=env("STRIPE_SECRET_KEY")
-
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
