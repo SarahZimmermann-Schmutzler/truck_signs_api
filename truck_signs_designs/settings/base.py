@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,10 +22,12 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
+env = environ.Env()
+# reading env file
+environ.Env.read_env()
 
 
-
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', env('IP_ADDRESS_VM')]
 
 
 # Application definition
@@ -147,8 +150,6 @@ MEDIA_ROOT = os.path.join(ROOT_BASE_DIR, 'media')
 
 # STRIPE_PUBLISHABLE_KEY=os.getenv("STRIPE_PUBLISHABLE_KEY")
 # STRIPE_SECRET_KEY=os.getenv("STRIPE_SECRET_KEY")
-
-
 
 
 # EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
