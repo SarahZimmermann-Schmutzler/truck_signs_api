@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Dein Dockerfile für die Django-App
+    container_name: truck_signs
+    volumes:
+      - .:/app
+    ports:
+      - "8020:5000"  # mapping port of VM (8020) to containerport 5000
+    env_file:
+      - .env
+    depends_on:
+      - db # makes sure that db (postgresql) container starts
+    restart: always  # restarts containers in case of errors automatically
+
+  db:
+    image: postgres:13 # uses official postgres-Image
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - /home/szimmermannschmutzler/docker/truck_signs_postgresql_data:/var/lib/postgresql/data  # absolute path on the VM:path on container
+    ports:
+      - "5432:5432" # Port 5432 on the host (VM) is forwarded to port 5432 in the container; Applications on the host or other computers on the network can reach the database in the container via <VM-IP>:5432
+    restart: always # restarts container in case of errors automatically

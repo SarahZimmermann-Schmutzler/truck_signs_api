@@ -1,27 +1,32 @@
 #!/usr/bin/env bash
+
+# aborts the script on errors
 set -e
 
 echo "Waiting for postgres to connect ..."
 
+# verifys that the database connection is ready
 while ! nc -z db 5432; do
   sleep 0.1
 done
 
 echo "PostgreSQL is active"
 
+# collects static files (media, templates)
 python manage.py collectstatic --noinput
-# python manage.py migrate
+
+# performs database migrations
 python manage.py makemigrations
 python manage.py migrate
 
-# gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8000
-
 echo "Postgresql migrations finished"
 
-gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:5000
-
 # automatic creation of a superuser. password, user and email are pulled from the .env
-# /backend/management/commands/createsupe.py
+# path: /backend/management/commands/createsupe.py
 python manage.py createsupe
 
-python manage.py runserver
+# run application on container port 5000
+python manage.py runserver 0.0.0.0:5000
+
+# run app with gunicorn for better performance in productive use 
+# gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8000
