@@ -18,7 +18,8 @@ RUN python -m pip install --upgrade pip && \
     python -m pip install -r requirements.txt
 
 # sets the execution rights if the entrypoint-script is not executable.
-RUN chmod +x /app/entrypoint.sh
+# RUN chmod +x /app/entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
 # opens container port 5000 for interaction
 EXPOSE 5000
