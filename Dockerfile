@@ -7,6 +7,12 @@ WORKDIR /app
 # copies the files of the current folder from the host in the /app-directory of the container during build process 
 COPY . $WORKDIR
 
+# installs system-wide dependencies for compilation and network verification
+# and delets cache files of package source information to reduce the size of the container
+RUN apt-get update && \
+    apt-get install -y build-essential gcc netcat-openbsd && \
+    rm -rf /var/lib/apt/lists/*
+
 # installs the dependencies for the app and that are saved in the requirements.txt
 RUN python -m pip install --upgrade pip && \
     python -m pip install -r requirements.txt
