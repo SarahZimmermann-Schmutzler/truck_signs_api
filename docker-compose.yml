@@ -17,6 +17,8 @@ services:
   db:
     image: postgres:13 # uses official postgres-Image
     container_name: postgres_db
+    env_file:
+      - /home/szimmermannschmutzler/projects/truck_signs_api/truck_signs_designs/settings/.env
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
