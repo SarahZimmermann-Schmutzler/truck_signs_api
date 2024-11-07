@@ -9,7 +9,7 @@ services:
     ports:
       - "8020:5000"  # mapping port of VM (8020) to containerport 5000
     env_file:
-      - .env
+      - /home/szimmermannschmutzler/projects/truck_signs_api/truck_signs_designs/settings/.env
     depends_on:
       - db # makes sure that db (postgresql) container starts
     restart: always  # restarts containers in case of errors automatically
