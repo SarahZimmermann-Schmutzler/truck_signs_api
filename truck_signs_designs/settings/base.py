@@ -25,7 +25,8 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 env = environ.Env()
 # reading env file
 # env_file_path = os.path.join(BASE_DIR, 'truck_signs_designs', 'settings', '.env')
-environ.Env.read_env()
+env_file_path = os.path.join(BASE_DIR, '.env')
+environ.Env.read_env(env_file_path)
 
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', env('IP_ADDRESS_VM')]
