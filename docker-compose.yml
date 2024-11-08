@@ -9,7 +9,7 @@ services:
       SUPERUSER_USERNAME: ${SUPERUSER_USERNAME}
       SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD}
       SUPERUSER_EMAIL: ${SUPERUSER_EMAIL}
-      
+      SECRET_KEY: ${SECRET_KEY}
     volumes:
       - .:/app
     ports:
