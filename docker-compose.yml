@@ -8,8 +8,6 @@ services:
       - .:/app
     ports:
       - "8020:5000"  # mapping port of VM (8020) to containerport 5000
-    env_file:
-      - "./truck_signs_designs/settings/.env" # for app
     depends_on:
       - db # makes sure that db (postgresql) container starts
     restart: always  # restarts containers in case of errors automatically
@@ -17,8 +15,10 @@ services:
   db:
     image: postgres:13 # uses official postgres-Image
     container_name: postgres_db
-    env_file:
-      - "./truck_signs_designs/settings/.env" # for database
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - /home/szimmermannschmutzler/docker/truck_signs_postgresql_data:/var/lib/postgresql/data  # absolute path on the VM:path on container
     ports:
