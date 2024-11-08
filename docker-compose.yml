@@ -4,6 +4,12 @@ services:
       context: .
       dockerfile: Dockerfile  # Dein Dockerfile für die Django-App
     container_name: truck_signs
+    environment:
+      IP_ADDRESS_VM: ${IP_ADDRESS_VM}
+      SUPERUSER_USERNAME: ${SUPERUSER_USERNAME}
+      SUPERUSER_PASSWORD: ${SUPERUSER_PASSWORD}
+      SUPERUSER_EMAIL: ${SUPERUSER_EMAIL}
+      
     volumes:
       - .:/app
     ports:
