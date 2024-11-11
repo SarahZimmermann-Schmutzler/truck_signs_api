@@ -5,9 +5,10 @@ set -e
 
 echo "Waiting for postgres to connect ..."
 
-# verifys that the database connection is ready
-while ! nc -z db 5432; do
-  sleep 0.1
+# verifys that the database connection is ready (every second)
+# name of database container: truck_signs_db
+while ! nc -z truck_signs_db 5432; do
+  sleep 1
 done
 
 echo "PostgreSQL is active"
