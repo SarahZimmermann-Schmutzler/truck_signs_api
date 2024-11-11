@@ -26,7 +26,7 @@ echo "Postgresql migrations finished"
 python manage.py createsupe
 
 # run application on container port 5000
-python manage.py runserver 0.0.0.0:5000
+# python manage.py runserver 0.0.0.0:5000
 
 # run app with gunicorn for better performance in productive use 
-# gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8000
+gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:5000

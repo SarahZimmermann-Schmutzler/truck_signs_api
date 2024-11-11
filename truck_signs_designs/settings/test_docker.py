@@ -5,8 +5,9 @@ DEBUG = True
 
 env = environ.Env()
 # reading env file
-env_file_path = os.path.join(BASE_DIR, 'truck_signs_designs', 'settings', '.env')
-environ.Env.read_env(env_file_path)
+# env_file_path = os.path.join(BASE_DIR, 'truck_signs_designs', 'settings', '.env')
+# environ.Env.read_env(env_file_path)
+environ.Env.read_env()
 
 SECRET_KEY = env("DOCKER_SECRET_KEY")
 DEBUG = True
