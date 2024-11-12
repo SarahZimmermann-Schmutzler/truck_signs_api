@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-import dotenv
+import environ
 import os
 
 class Command(BaseCommand):
@@ -8,12 +8,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # load .env-file
-        dotenv.load_dotenv()
+        env = environ.Env()
+        env.read_env()
 
         # load values from .env-file
-        username = os.environ.get('SUPERUSER_USERNAME')
-        email = os.environ.get('SUPERUSER_EMAIL')
-        password = os.environ.get('SUPERUSER_PASSWORD')
+        username = env('SUPERUSER_USERNAME')
+        email = env('SUPERUSER_EMAIL')
+        password = env('SUPERUSER_PASSWORD')
 
         if not username or not email or not password:
             self.stdout.write(self.style.ERROR('Superuser credentials are missing in the .env file.'))
