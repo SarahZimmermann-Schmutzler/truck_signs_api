@@ -88,14 +88,14 @@ The behavior of some of the views had to be modified to address functionalities 
     - The EMAIL_HOST_USER and the EMAIL_HOST_PASSWORD are the credentials to send emails from the website when a client makes a purchase. This is currently disable, but the code to activate this can be found in views.py in the create order view as comments. Therefore, any valid email and password will work.
 
 ### Containerization with Docker
-1. Create a `.dockerignore-file` for:
+1. If you work with **Docker** you need a `.dockerignore-file` for:
     ```
     .gitignore
     .git/
     __pycache__/
     ```
 
-2. Create a `Dockerfile` or use the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/Dockerfile">one given</a> in this Repository:
+2. Have a look at the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/Dockerfile">`Dockerfile`</a>:
     ```python
     # base frame of the container-image is the python version that was used to develop the app
     FROM python:3.8.10-slim
@@ -126,7 +126,7 @@ The behavior of some of the views had to be modified to address functionalities 
     ENTRYPOINT ["/app/entrypoint.sh"]
     ```
 
-3. Have a look in the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/entrypoint.sh">`entrypoint.sh`</a>:
+3. What does the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/entrypoint.sh">`entrypoint.sh`</a> do?
     ```bash
     #!/usr/bin/env bash
 
@@ -136,8 +136,8 @@ The behavior of some of the views had to be modified to address functionalities 
     echo "Waiting for postgres to connect ..."
 
     # verifys that the database connection is ready (every second)
-    # name of database container: truck_signs_db; if you don't want to name the database container like this, 
-    # you have to change the host-value to the name of yours
+    # name of database container: truck_signs_db 
+    # if you don't want to name the database container like this, you have to change the host-value to the name of yours
     while ! nc -z truck_signs_db 5432; do
         sleep 1
     done
