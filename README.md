@@ -12,7 +12,7 @@
 ## Table of Contents
 * [Description](#description)
 * [Usage](#usage)
-    * [Installation & Preparartion](#installation--preparartion)
+    * [Installation & Preparation](#installation--preparartion)
     * [Containerization with Docker](#containerization-with-docker)
 * [Screenshots of the Django Backend Admin Panel](#screenshots)
 * [Useful Links](#useful_links)
@@ -96,7 +96,7 @@ The behavior of some of the views had to be modified to address functionalities 
     ```
 
 2. Create a `Dockerfile` or use the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/Dockerfile">one given</a> in this Repository:
-    ```
+    ```python
     # base frame of the container-image is the python version that was used to develop the app
     FROM python:3.8.10-slim
 
@@ -126,8 +126,8 @@ The behavior of some of the views had to be modified to address functionalities 
     ENTRYPOINT ["/app/entrypoint.sh"]
     ```
 
-3. Have a look in the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/entrypoint.sh">`entrypoint.sh`</a>.
-    ```
+3. Have a look in the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/entrypoint.sh">`entrypoint.sh`</a>:
+    ```bash
     #!/usr/bin/env bash
 
     # aborts the script on errors
@@ -136,7 +136,8 @@ The behavior of some of the views had to be modified to address functionalities 
     echo "Waiting for postgres to connect ..."
 
     # verifys that the database connection is ready (every second)
-    # name of database container: truck_signs_db; if you don't want to name the database container like this, you have to change the host-value to the name of yours
+    # name of database container: truck_signs_db; if you don't want to name the database container like this, 
+    # you have to change the host-value to the name of yours
     while ! nc -z truck_signs_db 5432; do
         sleep 1
     done
@@ -174,7 +175,7 @@ The behavior of some of the views had to be modified to address functionalities 
         `docker network inspect [name_of_your_network]`
 
 6. Run the *Database-Container*:
-    ```
+    ```bash
     docker run -d \
     --name [name_of_your_database_container] \ 
     --network [name_of_your_network] \ 
@@ -194,7 +195,7 @@ The behavior of some of the views had to be modified to address functionalities 
     - *postgres:13*: Official PostgreSQL Image, newest version.
 
 7. Run the *App-Container*:
-    ```
+    ```bash
     docker run -d \
     --name [name_of_your_app_container] \
     --network [name_of_your_network] \
