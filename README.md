@@ -2,7 +2,7 @@
 
 ![Truck Signs](./screenshots/Truck_Signs_logo.png)
 
-# Signs for Trucks
+# Signs for Trucks - Backend Application
 
 ![Python version](https://img.shields.io/badge/Pythn-3.8.10-4c566a?logo=python&&longCache=true&logoColor=white&colorB=pink&style=flat-square&colorA=4c566a) ![Django version](https://img.shields.io/badge/Django-2.2.8-4c566a?logo=django&&longCache=truelogoColor=white&colorB=pink&style=flat-square&colorA=4c566a) ![Django-RestFramework](https://img.shields.io/badge/Django_Rest_Framework-3.12.4-red.svg?longCache=true&style=flat-square&logo=django&logoColor=white&colorA=4c566a&colorB=pink)
 
@@ -11,7 +11,9 @@
 
 ## Table of Contents
 * [Description](#description)
-* [Installation](#installation)
+* [Usage](#usage)
+    * [Installation & Preparartion](#installation--preparartion)
+    * [Containerization with Docker](#containerization-with-docker)
 * [Screenshots of the Django Backend Admin Panel](#screenshots)
 * [Useful Links](#useful_links)
 
@@ -19,11 +21,12 @@
 
 ## Description
 
-__Signs for Trucks__ is an online store to buy pre-designed vinyls with custom lines of letters (often call truck letterings). The store also allows clients to upload their own designs and to customize them on the website as well. Aside from the vinyls that are the main product of the store, clients can also purchase simple lettering vinyls with no truck logo, a fire extinguisher vinyl, and/or a vinyl with only the truck unit number (or another number selected by the client).
+__Signs for Trucks__ is an backend application for an online store to buy pre-designed vinyls with custom lines of letters (often call truck letterings). The store also allows clients to upload their own designs and to customize them on the website as well. Aside from the vinyls that are the main product of the store, clients can also purchase simple lettering vinyls with no truck logo, a fire extinguisher vinyl, and/or a vinyl with only the truck unit number (or another number selected by the client).
+It is no frontend given!
 
 ### Settings
 
-The __settings__ folder inside the trucks_signs_designs folder contains the different setting's configuration for each environment (so far the environments are development, docker testing, and production). Those files are extensions of the base.py file which contains the basic configuration shared among the different environments (for example, the value of the template directory location). In addition, the .env file inside this folder has the environment variables that are mostly sensitive information and should always be configured before use. By default, the environment in use is the decker testing. To change between environments modify the \_\_init.py\_\_ file.
+The __settings__ folder inside the trucks_signs_designs folder contains the different setting's configuration for each environment (so far the environments are development, docker testing, and production). Those files are extensions of the base.py file which contains the basic configuration shared among the different environments (for example, the value of the template directory location). In addition, the .env file inside this folder has the environment variables that are mostly sensitive information and should always be configured before use. By **default**, the environment in use is the **development environment**. To change between environments modify the \_\_init.py\_\_ file.
 
 ### Models
 
@@ -43,60 +46,117 @@ Most of the views are CBV imported from _rest_framework.generics_, and they allo
 
 The behavior of some of the views had to be modified to address functionalities such as creation of order and payment, as in this case, for example, both functionalities are implemented in the same view, and so a _GenericAPIView_ was the view from which it inherits. Another example of this is the _UploadCustomerImage_ View that takes the vinyl template uploaded by the clients and creates a new product based on it.
 
-## Installation
+## Usage
+
+### Installation & Preparation
 
 1. Clone the repo:
     ```bash
     git clone <INSERT URL>
     ```
-1. Configure a virtual env and set up the database. See [Link for configuring Virtual Environment](https://docs.python-guide.org/dev/virtualenvs/) and [Link for Database setup](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04).
-1. Configure the environment variables.
+2. Configure the environment variables.
     1. Copy the content of the example env file that is inside the truck_signs_designs folder into a .env file:
         ```bash
         cd truck_signs_designs/settings
         cp simple_env_config.env .env
         ```
-    1. The new .env file should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for the development environment to run are the following:
+    2. Add your IP-Address to the Allowed-Hosts-Section in `truck_signs_designs > settings > base.py`.
+
+    3. The new .env file should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for the **development environment** to run are the following:
         ```bash
-        SECRET_KEY
-        DB_NAME
-        DB_USER
-        DB_PASSWORD
-        DB_HOST
-        DB_PORT
-        STRIPE_PUBLISHABLE_KEY
-        STRIPE_SECRET_KEY
-        EMAIL_HOST_USER
-        EMAIL_HOST_PASSWORD
-        ```
-    1. For the database, the default configurations should be:
-        ```bash
+        SUPERUSER_USERNAME=yourSuperuserName
+        SUPERUSER_EMAIL=yourSuperuserMail
+        SUPERUSER_PASSWORD=yourSuperuserPassword
+        SECRET_KEY=configSeeBelow
         DB_NAME=trucksigns_db
         DB_USER=trucksigns_user
         DB_PASSWORD=supertrucksignsuser!
-        DB_HOST=localhost
+        DB_HOST=nameOfYourDatabaseContainer
         DB_PORT=5432
+        STRIPE_PUBLISHABLE_KEY=forDevelopmentItCouldBeADummy
+        STRIPE_SECRET_KEY=forDevelopmentItCouldBeADummy
+        EMAIL_HOST_USER=forDevelopmentItCouldBeADummy
+        EMAIL_HOST_PASSWORD=forDevelopmentItCouldBeADummy
         ```
-    1. The SECRET_KEY is the django secret key. To generate a new one see: [Stackoverflow Link](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
+    4. The SECRET_KEY is the django secret key. To generate a new one see: [Stackoverflow Link](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
 
-    1. **NOTE: not required for exercise**<br/>The STRIPE_PUBLISHABLE_KEY and the STRIPE_SECRET_KEY can be obtained from a developer account in [Stripe](https://stripe.com/). 
+    5. **NOTE: not required for exercise**<br/>The STRIPE_PUBLISHABLE_KEY and the STRIPE_SECRET_KEY can be obtained from a developer account in [Stripe](https://stripe.com/). 
         - To retrieve the keys from a Stripe developer account follow the next instructions:
             1. Log in into your Stripe developer account (stripe.com) or create a new one (stripe.com > Sign Up). This should redirect to the account's Dashboard.
             1. Go to Developer > API Keys, and copy both the Publishable Key and the Secret Key.
 
-    1. The EMAIL_HOST_USER and the EMAIL_HOST_PASSWORD are the credentials to send emails from the website when a client makes a purchase. This is currently disable, but the code to activate this can be found in views.py in the create order view as comments. Therefore, any valid email and password will work.
+    6. The EMAIL_HOST_USER and the EMAIL_HOST_PASSWORD are the credentials to send emails from the website when a client makes a purchase. This is currently disable, but the code to activate this can be found in views.py in the create order view as comments. Therefore, any valid email and password will work.
 
-1. Run the migrations and then the app:
-    ```bash
-    python manage.py migrate
-    python manage.py runserver
+### Containerization with Docker
+1. Create a `.dockerignore-file` for:
     ```
-1. Congratulations =) !!! The App should be running in [localhost:8000](http://localhost:8000)
-1. (Optional step) To create a super user run:
-    ```bash
-    python manage.py createsuperuser
+    .gitignore
+    .git/
+    __pycache__/
     ```
 
+2. Create a `Dockerfile` or use the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/Dockerfile">one given</a> in this Repository.
+
+3. Have a look in the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/entrypoint.sh">`entrypoint.sh`</a>
+    - <ins>Line 10</ins>: If you don't want to name the database container *truck_signs_db*, you have to adjust this host-value in this line.
+    - <ins>Line 27</ins>: The superuser is created automatically after starting the container. You can find the script in `backend > management > commands > createsupe.py`.
+    - <ins>Line 33</ins>: The App runs by default with the gunicorn web server. You can change that here, if you want to.
+
+4. Build the *Container-Image for the App-Container* using the Dockerfile:  
+    `docker build -t [name_of_your_image] .`
+    - -t: This flag defines the name or tag of the container image.
+    - . : The dot indicates that the build context directory is the current directory. Docker looks for the Dockerfile in this directory.
+
+5. Create a *docker network* so that the App- and Database-Container can communicate:  
+    `docker network create [name_of_your_network]`  
+    - Display your docker networks:  
+        `docker network ls`
+    - Display which container is in the network:  
+        `docker network inspect [name_of_your_network]`
+
+6. Run *Database-Container*:
+    ```
+    docker run -d \
+    --name [name_of_your_database_container] \ 
+    --network [name_of_your_network] \ 
+    --env-file ./truck_signs_designs/settings/.env \ 
+    -v path/to/your/data-saving-folder:/var/lib/postgresql/data \ # 
+    -p 5432:5432 \
+    --restart always \
+    postgres:13
+    ```
+    - *-d*: Starts container in detached mode (runs as background process and does not block the terminal).
+    - *--name*: Names the container.
+    - *--network*: Assigns the container to a network. You should use the one you created under 5.
+    - *--env-file*: Path to the .env file where the environment variables are stored. In this projects it is in <a href="#installation--preparation">`truck_signs_designs > settings > .ev`</a>.
+    - *-v*: Bind-Mount for data persistence. Path to a directory on the host that stores the data from the database container to retain the data even if the container is deleted : path where the data ist stored on the database container.
+    - *-p*: Publishes the container's port 5432 to the host's port 5432. Port 5432 is the default port for PostgreSQL database servers. Applications on the host can access the database using localhost:5432 (or the host IP).
+    - *--restart always*: Ensures that the container restarts automatically. Often the best choice for a database container because it minimizes outages and ensures a reliable database connection for connected applications.
+    - *postgres:13*: Official PostgreSQL Image, newest version.
+
+7. Run *App-Container*:
+    ```
+    docker run -d \
+    --name [name_of_your_app_container] \
+    --network [name_of_your_network] \
+    --env-file ./truck_signs_designs/settings/.env \
+    -v $(pwd):/app \
+    -p 8020:5000 \
+    --restart on-failure \
+    [name_of_your_image]
+    ```
+    - You can find the explanation for *-d* to *--env-file* is under 6.
+    - *-v $(pwd):/app*: Binds the the host's current working directory to the /app path in the container. This mirrors files and changes on the host directly into the container. This is helpful e.g. if you want to make code changes locally and see them immediately in the container.
+    - *-p 8020:5000*: Publishes port 5000 of the container to port 8020 of the host. Applications on the host can access the container using localhost:8020 (or the host IP address), while the application within the container listens on port 5000.
+    - *--restart on failure*: Specifies that the container only restarts if it exits with an error (exit code not 0).
+    - *[name_of_your_image]*: The name of the Docker image used for the container.
+
+8. Is everything fine?
+    - Get a list of all running Docker containers. You should find the App- and Database-Container with status `Up`:  
+    `docker ps`
+    - If yes: The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
+    - If no: Have a look into the logfiles and do a little debugging:  
+    `docker logs [name_of_your_container]` 
 
 __NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Category__ Truck Sign, and then the __Product__ (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
 
