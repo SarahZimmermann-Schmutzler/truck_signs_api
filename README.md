@@ -51,7 +51,7 @@ The behavior of some of the views had to be modified to address functionalities 
 ### Installation & Preparation
 
 1. Clone the repo:
-    `git clone [insert_github_link>`
+    `git clone [insert_github_link]`
 
 2. Configure the environment variables.
     - Copy the content of the example env file that is inside the truck_signs_designs folder into a .env file:
