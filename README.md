@@ -113,7 +113,7 @@ The behavior of some of the views had to be modified to address functionalities 
         DB_NAME=trucksigns_db
         DB_USER=trucksigns_user
         DB_PASSWORD=supertrucksignsuser!
-        # if you don not want to name your database-container "truck_signs_db" you have to change the host name in the entrypoint.sh
+        # If you don not want to name your database-container "truck_signs_db" you have to change the host name in the entrypoint.sh.
         DB_HOST=nameOfYourDatabaseContainer
         DB_PORT=5432
         STRIPE_PUBLISHABLE_KEY=forDevelopmentItCouldBeADummy
