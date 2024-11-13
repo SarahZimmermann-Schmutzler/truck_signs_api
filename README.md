@@ -50,7 +50,7 @@ The behavior of some of the views had to be modified to address functionalities 
 
 ### Installation & Preparation
 
-1. Clone the repo:
+1. Clone the repo:  
     `git clone [insert_github_link]`
 
 2. Configure the environment variables.
@@ -59,10 +59,12 @@ The behavior of some of the views had to be modified to address functionalities 
         cd truck_signs_designs/settings
         cp simple_env_config.env .env
         ```
-    - Add your IP-Address to the Allowed-Hosts-Section in `truck_signs_designs > settings > base.py`.
-
+    
     - The new .env file should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for the **development environment** to run are the following:
         ```bash
+        IP_ADDRESS_VM=yourIpAddress
+        # There is an env-variable for your IP-Address in the Allowed-Hosts-Section in truck_signs_designs > settings > base.py. 
+        # If you do not need it then earase it there and here.
         SUPERUSER_USERNAME=yourSuperuserName
         SUPERUSER_EMAIL=yourSuperuserMail
         SUPERUSER_PASSWORD=yourSuperuserPassword
@@ -164,8 +166,8 @@ The behavior of some of the views had to be modified to address functionalities 
 
 4. Build the *Container-Image for the App-Container* using the Dockerfile:  
     `docker build -t [name_of_your_image] .`
-    - *-t*: This flag defines the name or tag of the container image.
-    - *.*: The dot indicates that the build context directory is the current directory. Docker looks for the Dockerfile in this directory.
+    - *-t* : This flag defines the name or tag of the container image.
+    - *.* : The dot indicates that the build context directory is the current directory. Docker looks for the Dockerfile in this directory.
 
 5. Create a *docker network* so that the App- and Database-Container can communicate:  
     `docker network create [name_of_your_network]`  
@@ -185,14 +187,14 @@ The behavior of some of the views had to be modified to address functionalities 
     --restart always \
     postgres:13
     ```
-    - *-d*: Starts container in detached mode (runs as background process and does not block the terminal).
-    - *--name*: Names the container.
-    - *--network*: Assigns the container to a network. You should use the one you created under 5.
-    - *--env-file*: Path to the .env file where the environment variables are stored. In this projects it is in <a href="#installation--preparation">`truck_signs_designs > settings > .ev`</a>.
-    - *-v*: Bind-Mount for data persistence. Path to a directory on the host that stores the data from the database container to retain the data even if the container is deleted : path where the data ist stored on the database container.
-    - *-p*: Publishes the container's port 5432 to the host's port 5432. Port 5432 is the default port for PostgreSQL database servers. Applications on the host can access the database using localhost:5432 (or the host IP).
-    - *--restart always*: Ensures that the container restarts automatically. Often the best choice for a database container because it minimizes outages and ensures a reliable database connection for connected applications.
-    - *postgres:13*: Official PostgreSQL Image, newest version.
+    - *-d* : Starts container in detached mode (runs as background process and does not block the terminal).
+    - *--name* : Names the container.
+    - *--network* : Assigns the container to a network. You should use the one you created under 5.
+    - *--env-file* : Path to the .env file where the environment variables are stored. In this projects it is in <a href="#installation--preparation">`truck_signs_designs > settings > .ev`</a>.
+    - *-v* : Bind-Mount for data persistence. Path to a directory on the host that stores the data from the database container to retain the data even if the container is deleted : path where the data ist stored on the database container.
+    - *-p* : Publishes the container's port 5432 to the host's port 5432. Port 5432 is the default port for PostgreSQL database servers. Applications on the host can access the database using localhost:5432 (or the host IP).
+    - *--restart always* : Ensures that the container restarts automatically. Often the best choice for a database container because it minimizes outages and ensures a reliable database connection for connected applications.
+    - *postgres:13* : Official PostgreSQL Image, newest version.
 
 7. Run the *App-Container*:
     ```bash
@@ -206,17 +208,17 @@ The behavior of some of the views had to be modified to address functionalities 
     [name_of_your_image]
     ```
     - You can find the explanation for *-d* to *--env-file* is under 6.
-    - *-v $(pwd):/app*: Binds the the host's current working directory to the /app path in the container. This mirrors files and changes on the host directly into the container. This is helpful e.g. if you want to make code changes locally and see them immediately in the container.
-    - *-p 8020:5000*: Publishes port 5000 of the container to port 8020 of the host. Applications on the host can access the container using localhost:8020 (or the host IP address), while the application within the container listens on port 5000.
-    - *--restart on failure*: Specifies that the container only restarts if it exits with an error (exit code not 0).
-    - *[name_of_your_image]*: The name of the Docker image used for the container.
+    - *-v $(pwd):/app* : Binds the the host's current working directory to the /app path in the container. This mirrors files and changes on the host directly into the container. This is helpful e.g. if you want to make code changes locally and see them immediately in the container.
+    - *-p 8020:5000* : Publishes port 5000 of the container to port 8020 of the host. Applications on the host can access the container using localhost:8020 (or the host IP address), while the application within the container listens on port 5000.
+    - *--restart on failure* : Specifies that the container only restarts if it exits with an error (exit code not 0).
+    - *[name_of_your_image]* : The name of the Docker image used for the container.
 
 8. Is everything fine?
-    - Get a list of all running Docker containers. You should find the app- and aatabase-Container with the status `Up`:  
+    - Get a list of all running Docker containers. If there was no error while the starting processes, you should find the app- and database-container there:  
     `docker ps`
-    - <ins>If yes</ins>:  
+    - <ins>If the status is `Up`</ins>:  
     The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
-    - <ins>If no</ins>:  
+    - <ins>If the status is not `Up`</ins>:  
     Have a look into the logfiles and do a little debugging:  
     `docker logs [name_of_your_container]` 
 
