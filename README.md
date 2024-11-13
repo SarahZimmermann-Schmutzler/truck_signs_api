@@ -83,7 +83,7 @@ The behavior of some of the views had to be modified to address functionalities 
     - **NOTE: not required for exercise**<br/>The STRIPE_PUBLISHABLE_KEY and the STRIPE_SECRET_KEY can be obtained from a developer account in [Stripe](https://stripe.com/). 
         - To retrieve the keys from a Stripe developer account follow the next instructions:
             1. Log in into your Stripe developer account (stripe.com) or create a new one (stripe.com > Sign Up). This should redirect to the account's Dashboard.
-            1. Go to Developer > API Keys, and copy both the Publishable Key and the Secret Key.
+            2. Go to Developer > API Keys, and copy both the Publishable Key and the Secret Key.
 
     - The EMAIL_HOST_USER and the EMAIL_HOST_PASSWORD are the credentials to send emails from the website when a client makes a purchase. This is currently disable, but the code to activate this can be found in views.py in the create order view as comments. Therefore, any valid email and password will work.
 
@@ -95,12 +95,71 @@ The behavior of some of the views had to be modified to address functionalities 
     __pycache__/
     ```
 
-2. Create a `Dockerfile` or use the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/Dockerfile">one given</a> in this Repository.
+2. Create a `Dockerfile` or use the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/Dockerfile">one given</a> in this Repository:
+    ```
+    # base frame of the container-image is the python version that was used to develop the app
+    FROM python:3.8.10-slim
+
+    # creats directory in the container that contains all files/assets of the project 
+    WORKDIR /app
+
+    # copies the files of the current folder from the host in the /app-directory of the container during build process 
+    COPY . $WORKDIR
+
+    # installs system-wide dependencies for compilation and network verification
+    # and delets cache files of package source information to reduce the size of the container
+    RUN apt-get update && \
+        apt-get install -y build-essential gcc netcat-openbsd && \
+        rm -rf /var/lib/apt/lists/*
+
+    # installs the dependencies for the app and that are saved in the requirements.txt
+    RUN python -m pip install --upgrade pip && \
+        python -m pip install -r requirements.txt
+
+    # sets the execution rights if the entrypoint-script is not executable
+    RUN chmod +x ./entrypoint.sh
+
+    # opens container port 5000 for interaction
+    EXPOSE 5000
+
+    # entrypoint is outsourced in /app/entrypoint.sh
+    ENTRYPOINT ["/app/entrypoint.sh"]
+    ```
 
 3. Have a look in the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/entrypoint.sh">`entrypoint.sh`</a>.
-    - <ins>Line 10</ins>: If you don't want to name the database container *truck_signs_db*, you have to adjust this host-value in this line.
-    - <ins>Line 27</ins>: The superuser is created automatically after starting the container. You can find the script in `backend > management > commands > createsupe.py`.
-    - <ins>Line 33</ins>: The App runs by default with the gunicorn web server. You can change that here, if you want to.
+    ```
+    #!/usr/bin/env bash
+
+    # aborts the script on errors
+    set -e
+
+    echo "Waiting for postgres to connect ..."
+
+    # verifys that the database connection is ready (every second)
+    # name of database container: truck_signs_db; if you don't want to name the database container like this, you have to change the host-value to the name of yours
+    while ! nc -z truck_signs_db 5432; do
+        sleep 1
+    done
+
+    echo "PostgreSQL is active"
+
+    # collects static files (media, templates)
+    python manage.py collectstatic --noinput
+
+    # performs database migrations
+    python manage.py makemigrations
+    python manage.py migrate
+
+    echo "Postgresql migrations finished"
+
+    # automatic creation of a superuser; password, user and email are pulled from the .env
+    # path: /backend/management/commands/createsupe.py
+    python manage.py createsupe
+
+    # run app with gunicorn for better performance in productive use 
+    # you can also use 'python manage.py runserver 0.0.0.0:5000' for development
+    gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:5000
+    ```
 
 4. Build the *Container-Image for the App-Container* using the Dockerfile:  
     `docker build -t [name_of_your_image] .`
