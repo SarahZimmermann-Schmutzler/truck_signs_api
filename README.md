@@ -11,12 +11,12 @@
 
 ## Table of Contents
 * [Description](#description)
+* [Quickstart](#quickstart)
 * [Usage](#usage)
     * [Installation & Preparation](#installation--preparartion)
     * [Containerization with Docker](#containerization-with-docker)
 * [Screenshots of the Django Backend Admin Panel](#screenshots)
 * [Useful Links](#useful_links)
-
 
 
 ## Description
@@ -46,10 +46,51 @@ Most of the views are CBV imported from _rest_framework.generics_, and they allo
 
 The behavior of some of the views had to be modified to address functionalities such as creation of order and payment, as in this case, for example, both functionalities are implemented in the same view, and so a _GenericAPIView_ was the view from which it inherits. Another example of this is the _UploadCustomerImage_ View that takes the vinyl template uploaded by the clients and creates a new product based on it.
 
+## Quickstart
+1. Clone the repo:  
+    `git clone [insert_github_link]`
+
+2. Configure the environment variables like shown <a href="#installation--preparation">here</a>
+
+3. Build the *Container-Image for the App-Container* using the given Dockerfile:  
+    `docker build -t [name_of_your_image] .`
+
+4. Create a *docker network* so that the App- and Database-Container can communicate:  
+    `docker network create [name_of_your_network]`
+
+5. Run the *Database-Container*:
+    ```bash
+    docker run -d \
+    --name [name_of_your_database_container] \ 
+    --network [name_of_your_network] \ 
+    --env-file ./truck_signs_designs/settings/.env \ 
+    -v path/to/your/data-saving-folder:/var/lib/postgresql/data \ 
+    -p 5432:5432 \
+    --restart always \
+    postgres:13
+    ```
+6. Run the *App-Container*:
+    ```bash
+    docker run -d \
+    --name [name_of_your_app_container] \
+    --network [name_of_your_network] \
+    --env-file ./truck_signs_designs/settings/.env \
+    -v $(pwd):/app \
+    -p 8020:5000 \
+    --restart on-failure \
+    [name_of_your_image]
+    ```
+7. Is everything fine?
+    - Get a list of all running Docker containers. If there was no error while the starting processes, you should find the app- and database-container there:  
+    `docker ps`
+    - <ins>If the status is `Up`</ins>:  
+    The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
+    - <ins>If the status is not `Up`</ins>:  
+    Have a look into the logfiles and do a little debugging:  
+    `docker logs [name_of_your_container]`
+
 ## Usage
-
 ### Installation & Preparation
-
 1. Clone the repo:  
     `git clone [insert_github_link]`
 
@@ -72,6 +113,7 @@ The behavior of some of the views had to be modified to address functionalities 
         DB_NAME=trucksigns_db
         DB_USER=trucksigns_user
         DB_PASSWORD=supertrucksignsuser!
+        # if you don not want to name your database-container "truck_signs_db" you have to change the host name in the entrypoint.sh
         DB_HOST=nameOfYourDatabaseContainer
         DB_PORT=5432
         STRIPE_PUBLISHABLE_KEY=forDevelopmentItCouldBeADummy
