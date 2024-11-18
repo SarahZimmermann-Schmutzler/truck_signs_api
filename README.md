@@ -47,7 +47,7 @@ Most of the views are CBV imported from _rest_framework.generics_, and they allo
 The behavior of some of the views had to be modified to address functionalities such as creation of order and payment, as in this case, for example, both functionalities are implemented in the same view, and so a _GenericAPIView_ was the view from which it inherits. Another example of this is the _UploadCustomerImage_ View that takes the vinyl template uploaded by the clients and creates a new product based on it.
 
 ## Quickstart
-1. Clone the repo e.g. using an SSH-Key::  
+1. Clone the repo e.g. using an SSH-Key:  
     `git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git`
 
 2. Configure the environment variables like shown <a href="#installation--preparation">here</a>

@@ -7,6 +7,7 @@ echo "Waiting for postgres to connect ..."
 
 # verifys that the database connection is ready (every second)
 # name of database container: truck_signs_db
+# if you don't want to name the database container like this, you have to change the host-value to the name of yours (also in .env)
 while ! nc -z truck_signs_db 5432; do
   sleep 1
 done
