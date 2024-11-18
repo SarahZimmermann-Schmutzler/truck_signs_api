@@ -47,22 +47,22 @@ Most of the views are CBV imported from _rest_framework.generics_, and they allo
 The behavior of some of the views had to be modified to address functionalities such as creation of order and payment, as in this case, for example, both functionalities are implemented in the same view, and so a _GenericAPIView_ was the view from which it inherits. Another example of this is the _UploadCustomerImage_ View that takes the vinyl template uploaded by the clients and creates a new product based on it.
 
 ## Quickstart
-1. Clone the repo:  
-    `git clone [insert_github_link]`
+1. Clone the repo e.g. using an SSH-Key::  
+    `git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git`
 
 2. Configure the environment variables like shown <a href="#installation--preparation">here</a>
 
 3. Build the *Container-Image for the App-Container* using the given Dockerfile:  
-    `docker build -t [name_of_your_image] .`
+    `docker build -t truck_signs .`
 
 4. Create a *docker network* so that the App- and Database-Container can communicate:  
-    `docker network create [name_of_your_network]`
+    `docker network create truck_signs_network`
 
 5. Run the *Database-Container*:
     ```bash
     docker run -d \
-    --name [name_of_your_database_container] \ 
-    --network [name_of_your_network] \ 
+    --name truck_signs_db \ 
+    --network truck_signs_network \ 
     --env-file ./truck_signs_designs/settings/.env \ 
     -v path/to/your/data-saving-folder:/var/lib/postgresql/data \ 
     -p 5432:5432 \
@@ -72,13 +72,13 @@ The behavior of some of the views had to be modified to address functionalities 
 6. Run the *App-Container*:
     ```bash
     docker run -d \
-    --name [name_of_your_app_container] \
-    --network [name_of_your_network] \
+    --name truck_signs_web \
+    --network truck_signs_network \
     --env-file ./truck_signs_designs/settings/.env \
     -v $(pwd):/app \
     -p 8020:5000 \
     --restart on-failure \
-    [name_of_your_image]
+    truck_signs
     ```
 7. Is everything fine?
     - Get a list of all running Docker containers. If there was no error while the starting processes, you should find the app- and database-container there:  
@@ -91,8 +91,8 @@ The behavior of some of the views had to be modified to address functionalities 
 
 ## Usage
 ### Installation & Preparation
-1. Clone the repo:  
-    `git clone [insert_github_link]`
+1. Clone the repo e.g. using an SSH-Key:  
+    `git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git`
 
 2. Configure the environment variables.
     - Copy the content of the example env file that is inside the truck_signs_designs folder into a .env file:
@@ -113,8 +113,8 @@ The behavior of some of the views had to be modified to address functionalities 
         DB_NAME=trucksigns_db
         DB_USER=trucksigns_user
         DB_PASSWORD=supertrucksignsuser!
-        # If you don not want to name your database-container "truck_signs_db" you have to change the host name in the entrypoint.sh.
-        DB_HOST=nameOfYourDatabaseContainer
+        # If you don not want to name your database-container "truck_signs_db" you have to change the host name also in the entrypoint.sh.
+        DB_HOST=truck_signs_db
         DB_PORT=5432
         STRIPE_PUBLISHABLE_KEY=forDevelopmentItCouldBeADummy
         STRIPE_SECRET_KEY=forDevelopmentItCouldBeADummy
@@ -207,22 +207,22 @@ The behavior of some of the views had to be modified to address functionalities 
     ```
 
 4. Build the *Container-Image for the App-Container* using the Dockerfile:  
-    `docker build -t [name_of_your_image] .`
+    `docker build -t truck_signs .`
     - *-t* : This flag defines the name or tag of the container image.
     - *.* : The dot indicates that the build context directory is the current directory. Docker looks for the Dockerfile in this directory.
 
 5. Create a *docker network* so that the App- and Database-Container can communicate:  
-    `docker network create [name_of_your_network]`  
+    `docker network create truck_signs_network`  
     - Display your docker networks to check if the creation was successful:  
         `docker network ls`
     - Later you can display which container is in the network to check if they have connected properly:  
-        `docker network inspect [name_of_your_network]`
+        `docker network inspect truck_signs_network`
 
 6. Run the *Database-Container*:
     ```bash
     docker run -d \
-    --name [name_of_your_database_container] \ 
-    --network [name_of_your_network] \ 
+    --name truck_signs_db \ 
+    --network truck_signs_network \ 
     --env-file ./truck_signs_designs/settings/.env \ 
     -v path/to/your/data-saving-folder:/var/lib/postgresql/data \ 
     -p 5432:5432 \
@@ -241,19 +241,19 @@ The behavior of some of the views had to be modified to address functionalities 
 7. Run the *App-Container*:
     ```bash
     docker run -d \
-    --name [name_of_your_app_container] \
-    --network [name_of_your_network] \
+    --name truck_signs_web \
+    --network truck_signs_network \
     --env-file ./truck_signs_designs/settings/.env \
     -v $(pwd):/app \
     -p 8020:5000 \
     --restart on-failure \
-    [name_of_your_image]
+    truck_signs
     ```
     - You can find the explanation for *-d* to *--env-file* is under 6.
     - *-v $(pwd):/app* : Binds the the host's current working directory to the /app path in the container. This mirrors files and changes on the host directly into the container. This is helpful e.g. if you want to make code changes locally and see them immediately in the container.
     - *-p 8020:5000* : Publishes port 5000 of the container to port 8020 of the host. Applications on the host can access the container using localhost:8020 (or the host IP address), while the application within the container listens on port 5000.
     - *--restart on failure* : Specifies that the container only restarts if it exits with an error (exit code not 0).
-    - *[name_of_your_image]* : The name of the Docker image used for the container.
+    - *truck_signs* : The name of the Docker image used for the container.
 
 8. Is everything fine?
     - Get a list of all running Docker containers. If there was no error while the starting processes, you should find the app- and database-container there:  
@@ -262,7 +262,9 @@ The behavior of some of the views had to be modified to address functionalities 
     The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
     - <ins>If the status is not `Up`</ins>:  
     Have a look into the logfiles and do a little debugging:  
-    `docker logs [name_of_your_container]` 
+    `docker logs truck_signs_db`  
+    or  
+    `docker logs truck_signs_web` 
 
 __NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Category__ Truck Sign, and then the __Product__ (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
 
