@@ -59,7 +59,7 @@ The behavior of some of the views had to be modified to address functionalities 
     docker build -t truck_signs .
     ```
 
-4. Create a **docker networ**` so that the App- and Database-Container can communicate:  
+4. Create a **docker network**` so that the App- and Database-Container can communicate:  
     ```bash
     docker network create truck_signs_network
     ```
@@ -94,7 +94,7 @@ The behavior of some of the views had to be modified to address functionalities 
     - <ins>If the status is `Up`</ins>:  
     The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
     - <ins>If the status is not `Up`</ins>:  
-    Have a look into the `logfiles` and do a little debugging:  
+    Have a look into the **logfiles** and do a little debugging:  
         ```bash
         docker logs truck_signs_db  
         # or  
