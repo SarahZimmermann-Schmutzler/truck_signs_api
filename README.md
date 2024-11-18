@@ -52,19 +52,19 @@ The behavior of some of the views had to be modified to address functionalities 
     git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git
     ```
 
-2. Configure the environment variables like shown <a href="#installation--preparation">here</a>
+2. Configure the `environment variables` like shown <a href="#installation--preparation">here</a>
 
-3. Build the *Container-Image for the App-Container* using the given Dockerfile: 
+3. Build the `Container-Image for the App-Container` using the given Dockerfile: 
     ```bash
     docker build -t truck_signs .
     ```
 
-4. Create a *docker network* so that the App- and Database-Container can communicate:  
+4. Create a `docker network` so that the App- and Database-Container can communicate:  
     ```bash
     docker network create truck_signs_network
     ```
 
-5. Run the *Database-Container*:
+5. Run the `Database-Container`:
     ```bash
     docker run -d \
     --name truck_signs_db \ 
@@ -75,7 +75,7 @@ The behavior of some of the views had to be modified to address functionalities 
     --restart always \
     postgres:13
     ```
-6. Run the *App-Container*:
+6. Run the `App-Container`:
     ```bash
     docker run -d \
     --name truck_signs_web \
@@ -87,14 +87,14 @@ The behavior of some of the views had to be modified to address functionalities 
     truck_signs
     ```
 7. Is everything fine?
-    - Get a list of all running Docker containers. If there was no error while the starting processes, you should find the app- and database-container there:  
+    - Get a `list of all running Docker containers`. If there was no error while the starting processes, you should find the app- and database-container there:  
         ```bash
         docker ps
         ```
     - <ins>If the status is `Up`</ins>:  
     The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
     - <ins>If the status is not `Up`</ins>:  
-    Have a look into the logfiles and do a little debugging:  
+    Have a look into the `logfiles` and do a little debugging:  
         ```bash
         docker logs truck_signs_db  
         # or  
@@ -108,7 +108,7 @@ The behavior of some of the views had to be modified to address functionalities 
     git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git
     ```
 
-2. Configure the environment variables.
+2. Configure the `environment variables`.
     - Copy the content of the example env file that is inside the truck_signs_designs folder into a .env file:
         ```bash
         cd truck_signs_designs/settings
@@ -221,14 +221,14 @@ The behavior of some of the views had to be modified to address functionalities 
     gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:5000
     ```
 
-4. Build the *Container-Image for the App-Container* using the Dockerfile:  
+4. Build the `Container-Image for the App-Container` using the Dockerfile:  
     ```bash
     docker build -t truck_signs .
     ```
     - *-t* : This flag defines the name or tag of the container image.
     - *.* : The dot indicates that the build context directory is the current directory. Docker looks for the Dockerfile in this directory.
 
-5. Create a *docker network* so that the App- and Database-Container can communicate:  
+5. Create a `docker network` so that the App- and Database-Container can communicate:  
     ```bash
     docker network create truck_signs_network
     ```
@@ -241,7 +241,7 @@ The behavior of some of the views had to be modified to address functionalities 
         docker network inspect truck_signs_network
         ```  
 
-6. Run the *Database-Container*:
+6. Run the `Database-Container`:
     ```bash
     docker run -d \
     --name truck_signs_db \ 
@@ -261,7 +261,7 @@ The behavior of some of the views had to be modified to address functionalities 
     - *--restart always* : Ensures that the container restarts automatically. Often the best choice for a database container because it minimizes outages and ensures a reliable database connection for connected applications.
     - *postgres:13* : Official PostgreSQL Image, newest version.
 
-7. Run the *App-Container*:
+7. Run the `App-Container`:
     ```bash
     docker run -d \
     --name truck_signs_web \
@@ -279,14 +279,14 @@ The behavior of some of the views had to be modified to address functionalities 
     - *truck_signs* : The name of the Docker image used for the container.
 
 8. Is everything fine?
-    - Get a list of all running Docker containers. If there was no error while the starting processes, you should find the app- and database-container there:  
+    - Get a `list of all running Docker containers`. If there was no error while the starting processes, you should find the app- and database-container there:  
         ```bash
         docker ps
         ``` 
     - <ins>If the status is `Up`</ins>:  
     The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
     - <ins>If the status is not `Up`</ins>:  
-    Have a look into the logfiles and do a little debugging:  
+    Have a look into the `logfiles` and do a little debugging:  
         ```bash
         docker logs truck_signs_db  
         # or  
