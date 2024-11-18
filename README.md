@@ -108,7 +108,7 @@ The behavior of some of the views had to be modified to address functionalities 
     git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git
     ```
 
-2. Configure the `environment variables`.
+2. Configure the `environment variables`:
     - Copy the content of the example env file that is inside the truck_signs_designs folder into a .env file:
         ```bash
         cd truck_signs_designs/settings
