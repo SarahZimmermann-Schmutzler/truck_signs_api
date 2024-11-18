@@ -88,18 +88,18 @@ The behavior of some of the views had to be modified to address functionalities 
     ```
 7. Is everything fine?
     - Get a list of all running Docker containers. If there was no error while the starting processes, you should find the app- and database-container there:  
-    ```bash
-    docker ps
-    ```
+        ```bash
+        docker ps
+        ```
     - <ins>If the status is `Up`</ins>:  
     The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
     - <ins>If the status is not `Up`</ins>:  
     Have a look into the logfiles and do a little debugging:  
-    ```bash
-    docker logs truck_signs_db  
-    # or  
-    docker logs truck_signs_web
-    ```
+        ```bash
+        docker logs truck_signs_db  
+        # or  
+        docker logs truck_signs_web
+        ```
 
 ## Usage
 ### Installation & Preparation
@@ -280,18 +280,18 @@ The behavior of some of the views had to be modified to address functionalities 
 
 8. Is everything fine?
     - Get a list of all running Docker containers. If there was no error while the starting processes, you should find the app- and database-container there:  
-    ```bash
-    docker ps
-    ``` 
+        ```bash
+        docker ps
+        ``` 
     - <ins>If the status is `Up`</ins>:  
     The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
     - <ins>If the status is not `Up`</ins>:  
     Have a look into the logfiles and do a little debugging:  
-    ```bash
-    docker logs truck_signs_db  
-    # or  
-    docker logs truck_signs_web
-    ``` 
+        ```bash
+        docker logs truck_signs_db  
+        # or  
+        docker logs truck_signs_web
+        ``` 
 
 __NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Category__ Truck Sign, and then the __Product__ (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
 
