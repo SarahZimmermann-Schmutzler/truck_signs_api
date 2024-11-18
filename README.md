@@ -59,7 +59,7 @@ The behavior of some of the views had to be modified to address functionalities 
     docker build -t truck_signs .
     ```
 
-4. Create a **docker network**` so that the App- and Database-Container can communicate:  
+4. Create a **docker network** so that the App- and Database-Container can communicate:  
     ```bash
     docker network create truck_signs_network
     ```
