@@ -48,15 +48,21 @@ The behavior of some of the views had to be modified to address functionalities 
 
 ## Quickstart
 1. Clone the repo e.g. using an SSH-Key:  
-    `git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git`
+    ```bash
+    git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git
+    ```
 
 2. Configure the environment variables like shown <a href="#installation--preparation">here</a>
 
-3. Build the *Container-Image for the App-Container* using the given Dockerfile:  
-    `docker build -t truck_signs .`
+3. Build the *Container-Image for the App-Container* using the given Dockerfile: 
+    ```bash
+    docker build -t truck_signs .
+    ```
 
 4. Create a *docker network* so that the App- and Database-Container can communicate:  
-    `docker network create truck_signs_network`
+    ```bash
+    docker network create truck_signs_network
+    ```
 
 5. Run the *Database-Container*:
     ```bash
@@ -82,23 +88,32 @@ The behavior of some of the views had to be modified to address functionalities 
     ```
 7. Is everything fine?
     - Get a list of all running Docker containers. If there was no error while the starting processes, you should find the app- and database-container there:  
-    `docker ps`
+    ```bash
+    docker ps
+    ```
     - <ins>If the status is `Up`</ins>:  
     The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
     - <ins>If the status is not `Up`</ins>:  
     Have a look into the logfiles and do a little debugging:  
-    `docker logs [name_of_your_container]`
+    ```bash
+    docker logs truck_signs_db  
+    # or  
+    docker logs truck_signs_web
+    ```
 
 ## Usage
 ### Installation & Preparation
 1. Clone the repo e.g. using an SSH-Key:  
-    `git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git`
+    ```bash
+    git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git
+    ```
 
 2. Configure the environment variables.
     - Copy the content of the example env file that is inside the truck_signs_designs folder into a .env file:
         ```bash
         cd truck_signs_designs/settings
         cp simple_env_config.env .env
+        sudo nano .env
         ```
     
     - The new .env file should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for the **development environment** to run are the following:
@@ -207,16 +222,24 @@ The behavior of some of the views had to be modified to address functionalities 
     ```
 
 4. Build the *Container-Image for the App-Container* using the Dockerfile:  
-    `docker build -t truck_signs .`
+    ```bash
+    docker build -t truck_signs .
+    ```
     - *-t* : This flag defines the name or tag of the container image.
     - *.* : The dot indicates that the build context directory is the current directory. Docker looks for the Dockerfile in this directory.
 
 5. Create a *docker network* so that the App- and Database-Container can communicate:  
-    `docker network create truck_signs_network`  
+    ```bash
+    docker network create truck_signs_network
+    ```
     - Display your docker networks to check if the creation was successful:  
-        `docker network ls`
-    - Later you can display which container is in the network to check if they have connected properly:  
-        `docker network inspect truck_signs_network`
+        ```bash
+        docker network ls
+        ```
+    - Later you can display which container is in the network to check if they have connected properly:
+        ```bash
+        docker network inspect truck_signs_network
+        ```  
 
 6. Run the *Database-Container*:
     ```bash
@@ -257,14 +280,18 @@ The behavior of some of the views had to be modified to address functionalities 
 
 8. Is everything fine?
     - Get a list of all running Docker containers. If there was no error while the starting processes, you should find the app- and database-container there:  
-    `docker ps`
+    ```bash
+    docker ps
+    ``` 
     - <ins>If the status is `Up`</ins>:  
     The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
     - <ins>If the status is not `Up`</ins>:  
     Have a look into the logfiles and do a little debugging:  
-    `docker logs truck_signs_db`  
-    or  
-    `docker logs truck_signs_web` 
+    ```bash
+    docker logs truck_signs_db  
+    # or  
+    docker logs truck_signs_web
+    ``` 
 
 __NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Category__ Truck Sign, and then the __Product__ (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
 
