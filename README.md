@@ -70,11 +70,11 @@ The behavior of some of the views had to be modified to address functionalities 
     --name truck_signs_db \ 
     --network truck_signs_network \ 
     --env-file ./truck_signs_designs/settings/.env \ 
-    -v path/to/your/data-saving-folder:/var/lib/postgresql/data \ 
-    -p 5432:5432 \
+    -v path/to/your/data-saving-folder:/var/lib/postgresql/data \
     --restart always \
     postgres:13
     ```
+
 6. Run the **App-Container**:
     ```bash
     docker run -d \
