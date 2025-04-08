@@ -6,18 +6,17 @@
 
 ![Python version](https://img.shields.io/badge/Pythn-3.8.10-4c566a?logo=python&&longCache=true&logoColor=white&colorB=pink&style=flat-square&colorA=4c566a) ![Django version](https://img.shields.io/badge/Django-2.2.8-4c566a?logo=django&&longCache=truelogoColor=white&colorB=pink&style=flat-square&colorA=4c566a) ![Django-RestFramework](https://img.shields.io/badge/Django_Rest_Framework-3.12.4-red.svg?longCache=true&style=flat-square&logo=django&logoColor=white&colorA=4c566a&colorB=pink)
 
-
 </div>
 
 ## Table of Contents
+
 * [Description](#description)
 * [Quickstart](#quickstart)
 * [Usage](#usage)
-    * [Installation & Preparation](#installation--preparartion)
-    * [Containerization with Docker](#containerization-with-docker)
+  * [Installation and Preparation](#installation-and-preparation)
+  * [Containerization with Docker](#containerization-with-docker)
 * [Screenshots of the Django Backend Admin Panel](#screenshots)
 * [Useful Links](#useful_links)
-
 
 ## Description
 
@@ -47,24 +46,31 @@ Most of the views are CBV imported from _rest_framework.generics_, and they allo
 The behavior of some of the views had to be modified to address functionalities such as creation of order and payment, as in this case, for example, both functionalities are implemented in the same view, and so a _GenericAPIView_ was the view from which it inherits. Another example of this is the _UploadCustomerImage_ View that takes the vinyl template uploaded by the clients and creates a new product based on it.
 
 ## Quickstart
-1. Clone the repo e.g. using an SSH-Key:  
+
+This section provides a fast and **minimal setup guide** for using the tools in this repository. For a more **in-depth understanding** and additional options, please refer to the [Usage](#usage) section.
+
+1. Clone the repo e.g. using an SSH-Key:
+
     ```bash
     git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git
     ```
 
-2. Configure the **environment variables** like shown <a href="#installation--preparation">here</a>
+1. Configure the **environment variables** like shown [here](#installation-and-preparation).
 
-3. Build the **Container-Image for the App-Container** using the given Dockerfile: 
+1. Build the **Container-Image for the App-Container** using the given Dockerfile:
+
     ```bash
     docker build -t truck_signs .
     ```
 
-4. Create a **docker network** so that the App- and Database-Container can communicate:  
+1. Create a **docker network** so that the App- and Database-Container can communicate:
+
     ```bash
     docker network create truck_signs_network
     ```
 
-5. Run the **Database-Container**:
+1. Run the **Database-Container**:
+
     ```bash
     docker run -d \
     --name truck_signs_db \ 
@@ -75,7 +81,8 @@ The behavior of some of the views had to be modified to address functionalities 
     postgres:13
     ```
 
-6. Run the **App-Container**:
+1. Run the **App-Container**:
+
     ```bash
     docker run -d \
     --name truck_signs_web \
@@ -86,182 +93,144 @@ The behavior of some of the views had to be modified to address functionalities 
     --restart on-failure \
     truck_signs
     ```
-7. Is everything fine?
-    - Get a **list of all running Docker containers**. If there was no error while the starting processes, you should find the app- and database-container there:  
-        ```bash
-        docker ps
-        ```
-    - <ins>If the status is `Up`</ins>:  
-    The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
-    - <ins>If the status is not `Up`</ins>:  
+
+1. Is everything fine?
+
+* Get a **list of all running Docker containers**. If there was no error while the starting processes, you should find the app- and database-container there:
+
+    ```bash
+    docker ps
+    ```
+
+  * <ins>If the status is `Up`</ins>:  
+    The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env.
+
+  * <ins>If the status is not `Up`</ins>:  
     Have a look into the **logfiles** and do a little debugging:  
-        ```bash
-        docker logs truck_signs_db  
-        # or  
-        docker logs truck_signs_web
-        ```
+
+    ```bash
+    docker logs truck_signs_db  
+    # or  
+    docker logs truck_signs_web
+    ```
 
 ## Usage
-### Installation & Preparation
-1. Clone the repo e.g. using an SSH-Key:  
+
+### Installation and Preparation
+
+1. Clone the repo e.g. using an SSH-Key:
+
     ```bash
     git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git
     ```
 
 2. Configure the **environment variables**:
-    - Copy the content of the example env file that is inside the truck_signs_designs folder into a .env file:
-        ```bash
-        cd truck_signs_designs/settings
-        cp simple_env_config.env .env
-        sudo nano .env
-        ```
-    
-    - The new .env file should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for the **development environment** to run are the following:
-        ```bash
-        IP_ADDRESS_VM=yourIpAddress
-        # There is an env-variable for your IP-Address in the Allowed-Hosts-Section in truck_signs_designs > settings > base.py. 
-        # If you do not need it then earase it there and here.
-        SUPERUSER_USERNAME=yourSuperuserName
-        SUPERUSER_EMAIL=yourSuperuserMail
-        SUPERUSER_PASSWORD=yourSuperuserPassword
-        SECRET_KEY=configSeeBelow
-        DB_NAME=trucksigns_db
-        DB_USER=trucksigns_user
-        DB_PASSWORD=supertrucksignsuser!
-        # If you don not want to name your database-container "truck_signs_db" you have to change the host name also in the entrypoint.sh.
-        DB_HOST=truck_signs_db
-        DB_PORT=5432
-        STRIPE_PUBLISHABLE_KEY=forDevelopmentItCouldBeADummy
-        STRIPE_SECRET_KEY=forDevelopmentItCouldBeADummy
-        EMAIL_HOST_USER=forDevelopmentItCouldBeADummy
-        EMAIL_HOST_PASSWORD=forDevelopmentItCouldBeADummy
-        ```
 
-    - The SECRET_KEY is the django secret key. To generate a new one see: [Stackoverflow Link](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
+    * Copy the content of the **example env file** that is inside the truck_signs_designs folder into a `.env file`:
 
-    - **NOTE: not required for exercise**<br/>The STRIPE_PUBLISHABLE_KEY and the STRIPE_SECRET_KEY can be obtained from a developer account in [Stripe](https://stripe.com/). 
-        - To retrieve the keys from a Stripe developer account follow the next instructions:
+    ```bash
+    cd truck_signs_designs/settings
+    cp simple_env_config.env .env
+    sudo nano .env
+    ```
+
+    * The new `.env file` should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for the **development environment** to run are the following:
+
+    ```bash
+    IP_ADDRESS_VM=yourIpAddress
+    # There is an env-variable for your IP-Address in the Allowed-Hosts-Section in truck_signs_designs > settings > base.py. 
+    # If you do not need it then earase it there and here.
+    SUPERUSER_USERNAME=yourSuperuserName
+    SUPERUSER_EMAIL=yourSuperuserMail
+    SUPERUSER_PASSWORD=yourSuperuserPassword
+    SECRET_KEY=configSeeBelow
+    DB_NAME=trucksigns_db
+    DB_USER=trucksigns_user
+    DB_PASSWORD=supertrucksignsuser!
+    # If you don not want to name your database-container "truck_signs_db" you have to change the host name also in the entrypoint.sh.
+    DB_HOST=truck_signs_db
+    DB_PORT=5432
+    STRIPE_PUBLISHABLE_KEY=forDevelopmentItCouldBeADummy
+    STRIPE_SECRET_KEY=forDevelopmentItCouldBeADummy
+    EMAIL_HOST_USER=forDevelopmentItCouldBeADummy
+    EMAIL_HOST_PASSWORD=forDevelopmentItCouldBeADummy
+    ```
+
+    * The `SECRET_KEY` is the django secret key
+
+      * To generate a new one see: [Stackoverflow Link](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
+
+    * **NOTE: not required for exercise**
+      * The `STRIPE_PUBLISHABLE_KEY` and the `STRIPE_SECRET_KEY` can be obtained from a developer account in [Stripe](https://stripe.com/).
+        * To retrieve the keys from a Stripe developer account follow the next instructions:
             1. Log in into your Stripe developer account (stripe.com) or create a new one (stripe.com > Sign Up). This should redirect to the account's Dashboard.
             2. Go to Developer > API Keys, and copy both the Publishable Key and the Secret Key.
 
-    - The EMAIL_HOST_USER and the EMAIL_HOST_PASSWORD are the credentials to send emails from the website when a client makes a purchase. This is currently disable, but the code to activate this can be found in views.py in the create order view as comments. Therefore, any valid email and password will work.
+    * The `EMAIL_HOST_USER` and the `EMAIL_HOST_PASSWORD` are the credentials to send emails from the website when a client makes a purchase. This is currently disable, but the code to activate this can be found in views.py in the create order view as comments. Therefore, any valid email and password will work.
 
 ### Containerization with Docker
+
 1. If you work with **Docker** you need a `.dockerignore-file` for:
-    ```
+
+    ```bash
     .gitignore
     .git/
     __pycache__/
     ```
 
-2. Have a look at the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/Dockerfile">`Dockerfile`</a>:
-    ```python
-    # base frame of the container-image is the python version that was used to develop the app
-    FROM python:3.8.10-slim
+2. The [Dockerfile](./Dockerfile) is a text file that describes step by step how to build a Docker image – including the base image, installed software and configurations.
 
-    # creats directory in the container that contains all files/assets of the project 
-    WORKDIR /app
-
-    # copies the files of the current folder from the host in the /app-directory of the container during build process 
-    COPY . $WORKDIR
-
-    # installs system-wide dependencies for compilation and network verification
-    # and delets cache files of package source information to reduce the size of the container
-    RUN apt-get update && \
-        apt-get install -y build-essential gcc netcat-openbsd && \
-        rm -rf /var/lib/apt/lists/*
-
-    # installs the dependencies for the app and that are saved in the requirements.txt
-    RUN python -m pip install --upgrade pip && \
-        python -m pip install -r requirements.txt
-
-    # sets the execution rights if the entrypoint-script is not executable
-    RUN chmod +x ./entrypoint.sh
-
-    # opens container port 5000 for interaction
-    EXPOSE 5000
-
-    # entrypoint is outsourced in /app/entrypoint.sh
-    ENTRYPOINT ["/app/entrypoint.sh"]
-    ```
-
-3. What does the <a href="https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/entrypoint.sh">`entrypoint.sh`</a> do?
-    ```bash
-    #!/usr/bin/env bash
-
-    # aborts the script on errors
-    set -e
-
-    echo "Waiting for postgres to connect ..."
-
-    # verifys that the database connection is ready (every second)
-    # name of database container: truck_signs_db 
-    # if you don't want to name the database container like this, you have to change the host-value to the name of yours
-    while ! nc -z truck_signs_db 5432; do
-        sleep 1
-    done
-
-    echo "PostgreSQL is active"
-
-    # collects static files (media, templates)
-    python manage.py collectstatic --noinput
-
-    # performs database migrations
-    python manage.py makemigrations
-    python manage.py migrate
-
-    echo "Postgresql migrations finished"
-
-    # automatic creation of a superuser; password, user and email are pulled from the .env
-    # path: /backend/management/commands/createsupe.py
-    python manage.py createsupe
-
-    # run app with gunicorn for better performance in productive use 
-    # you can also use 'python manage.py runserver 0.0.0.0:5000' for development
-    gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:5000
-    ```
+3. The [entrypoint.sh](./entrypoint.sh) is a script that is automatically executed when a Docker container is started and handles typical startup commands or initializations.
 
 4. Build the **Container-Image for the App-Container** using the Dockerfile:  
+
     ```bash
     docker build -t truck_signs .
     ```
-    - *-t* : This flag defines the name or tag of the container image.
-    - *.* : The dot indicates that the build context directory is the current directory. Docker looks for the Dockerfile in this directory.
 
-5. Create a **docker network** so that the App- and Database-Container can communicate:  
+    * *-t*: This flag defines the name or tag of the container image.
+    * *.*: The dot indicates that the build context directory is the current directory. Docker looks for the Dockerfile in this directory.
+
+5. Create a **docker network** so that the App- and Database-Container can communicate:
+
     ```bash
     docker network create truck_signs_network
     ```
-    - Display your docker networks to check if the creation was successful:  
+
+    * Display your docker networks to **check if the creation was successful**:
+
         ```bash
         docker network ls
         ```
-    - Later you can display which container is in the network to check if they have connected properly:
+
+    * Later you can display **which container is in the network** to check if they have **connected properly**:
+
         ```bash
         docker network inspect truck_signs_network
         ```  
 
 6. Run the **Database-Container**:
+
     ```bash
     docker run -d \
     --name truck_signs_db \ 
     --network truck_signs_network \ 
     --env-file ./truck_signs_designs/settings/.env \ 
-    -v path/to/your/data-saving-folder:/var/lib/postgresql/data \ 
-    -p 5432:5432 \
+    -v path/to/your/data-saving-folder:/var/lib/postgresql/data \
     --restart always \
     postgres:13
     ```
-    - *-d* : Starts container in detached mode (runs as background process and does not block the terminal).
-    - *--name* : Names the container.
-    - *--network* : Assigns the container to a network. You should use the one you created under 5.
-    - *--env-file* : Path to the .env file where the environment variables are stored. In this projects it is in <a href="#installation--preparation">`truck_signs_designs > settings > .ev`</a>.
-    - *-v* : Bind-Mount for data persistence. Path to a directory on the host that stores the data from the database container to retain the data even if the container is deleted : path where the data ist stored on the database container.
-    - *-p* : Publishes the container's port 5432 to the host's port 5432. Port 5432 is the default port for PostgreSQL database servers. Applications on the host can access the database using localhost:5432 (or the host IP).
-    - *--restart always* : Ensures that the container restarts automatically. Often the best choice for a database container because it minimizes outages and ensures a reliable database connection for connected applications.
-    - *postgres:13* : Official PostgreSQL Image, newest version.
+
+    * *-d*: Starts container in detached mode (runs as background process and does not block the terminal).
+    * *--name*: Names the container.
+    * *--network*: Assigns the container to a network. You should use the one you created under 5.
+    * *--env-file*: Path to the .env file where the environment variables are stored. In this projects it is in [truck_signs_designs > settings > .ev](#installation-and-preparation).
+    * *-v*: Bind-Mount for data persistence. Path to a directory on the host that stores the data from the database container to retain the data even if the container is deleted : path where the data ist stored on the database container.
+    * *--restart always*: Ensures that the container restarts automatically. Often the best choice for a database container because it minimizes outages and ensures a reliable database connection for connected applications.
+    * *postgres:13*: Official PostgreSQL Image, newest version.
 
 7. Run the **App-Container**:
+
     ```bash
     docker run -d \
     --name truck_signs_web \
@@ -272,26 +241,32 @@ The behavior of some of the views had to be modified to address functionalities 
     --restart on-failure \
     truck_signs
     ```
-    - You can find the explanation for *-d* to *--env-file* is under 6.
-    - *-v $(pwd):/app* : Binds the the host's current working directory to the /app path in the container. This mirrors files and changes on the host directly into the container. This is helpful e.g. if you want to make code changes locally and see them immediately in the container.
-    - *-p 8020:5000* : Publishes port 5000 of the container to port 8020 of the host. Applications on the host can access the container using localhost:8020 (or the host IP address), while the application within the container listens on port 5000.
-    - *--restart on failure* : Specifies that the container only restarts if it exits with an error (exit code not 0).
-    - *truck_signs* : The name of the Docker image used for the container.
+
+    * You can find the explanation for *-d* to *--env-file* is under 6.
+    * *-v $(pwd):/app* : Binds the the host's current working directory to the /app path in the container. This mirrors files and changes on the host directly into the container. This is helpful e.g. if you want to make code changes locally and see them immediately in the container.
+    * *-p 8020:5000* : Publishes port 5000 of the container to port 8020 of the host. Applications on the host can access the container using localhost:8020 (or the host IP address), while the application within the container listens on port 5000.
+    * *--restart on failure* : Specifies that the container only restarts if it exits with an error (exit code not 0).
+    * *truck_signs* : The name of the Docker image used for the container.
 
 8. Is everything fine?
-    - Get a **list of all running Docker containers**. If there was no error while the starting processes, you should find the app- and database-container there:  
+
+    * Get a **list of all running Docker containers**. If there was no error while the starting processes, you should find the app- and database-container there:
+
         ```bash
         docker ps
-        ``` 
-    - <ins>If the status is `Up`</ins>:  
-    The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env. 
-    - <ins>If the status is not `Up`</ins>:  
-    Have a look into the **logfiles** and do a little debugging:  
+        ```
+
+        * <ins>If the status is `Up`</ins>:  
+        The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env.
+
+        * <ins>If the status is not `Up`</ins>:  
+        Have a look into the **logfiles** and do a little debugging:
+
         ```bash
         docker logs truck_signs_db  
         # or  
         docker logs truck_signs_web
-        ``` 
+        ```
 
 __NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Category__ Truck Sign, and then the __Product__ (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
 
@@ -323,7 +298,6 @@ __NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Ca
 ![alt text](./screenshots/Admin_Panel_View_3.png)
 
 
-
 <a name="useful_links"></a>
 ## Useful Links
 
@@ -350,4 +324,3 @@ __NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Ca
 - Create Virual Environment with Virtualenv and Virtualenvwrapper: [Link](https://docs.python-guide.org/dev/virtualenvs/)
 - [Configure CORS](https://www.stackhawk.com/blog/django-cors-guide/)
 - [Setup Django with Cloudinary](https://cloudinary.com/documentation/django_integration)
-
