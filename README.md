@@ -94,25 +94,25 @@ This section provides a fast and **minimal setup guide** for using the tools in 
     truck_signs
     ```
 
-1. Is everything fine?
+1. Check if everything is fine:
 
-* Get a **list of all running Docker containers**. If there was no error while the starting processes, you should find the app- and database-container there:
+    * Get a **list of all running Docker containers**. If there was no error while the starting processes, you should find the app- and database-container there:
 
     ```bash
     docker ps
     ```
 
-  * <ins>If the status is `Up`</ins>:  
-    The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env.
+      * <ins>If the status is `Up`</ins>:  
+      The App should be running in IP-Address_of_yor_Host:8020 - But you know, there is no frontend, so have a look at the admin-panel page: **IP-Address_of_yor_Host:8020/admin**. You can log in there immediately with your superuser data that are defined in the .env.
 
-  * <ins>If the status is not `Up`</ins>:  
-    Have a look into the **logfiles** and do a little debugging:  
+      * <ins>If the status is not `Up`</ins>:  
+      Have a look into the **logfiles** and do a little debugging:  
 
-    ```bash
-    docker logs truck_signs_db  
-    # or  
-    docker logs truck_signs_web
-    ```
+        ```bash
+        docker logs truck_signs_db  
+        # or  
+        docker logs truck_signs_web
+        ```
 
 ## Usage
 
@@ -128,33 +128,33 @@ This section provides a fast and **minimal setup guide** for using the tools in 
 
     * Copy the content of the **example env file** that is inside the truck_signs_designs folder into a `.env file`:
 
-    ```bash
-    cd truck_signs_designs/settings
-    cp simple_env_config.env .env
-    sudo nano .env
-    ```
+        ```bash
+        cd truck_signs_designs/settings
+        cp simple_env_config.env .env
+        sudo nano .env
+        ```
 
     * The new `.env file` should contain all the environment variables necessary to run all the django app in all the environments. However, the only needed variables for the **development environment** to run are the following:
 
-    ```bash
-    IP_ADDRESS_VM=yourIpAddress
-    # There is an env-variable for your IP-Address in the Allowed-Hosts-Section in truck_signs_designs > settings > base.py. 
-    # If you do not need it then earase it there and here.
-    SUPERUSER_USERNAME=yourSuperuserName
-    SUPERUSER_EMAIL=yourSuperuserMail
-    SUPERUSER_PASSWORD=yourSuperuserPassword
-    SECRET_KEY=configSeeBelow
-    DB_NAME=trucksigns_db
-    DB_USER=trucksigns_user
-    DB_PASSWORD=supertrucksignsuser!
-    # If you don not want to name your database-container "truck_signs_db" you have to change the host name also in the entrypoint.sh.
-    DB_HOST=truck_signs_db
-    DB_PORT=5432
-    STRIPE_PUBLISHABLE_KEY=forDevelopmentItCouldBeADummy
-    STRIPE_SECRET_KEY=forDevelopmentItCouldBeADummy
-    EMAIL_HOST_USER=forDevelopmentItCouldBeADummy
-    EMAIL_HOST_PASSWORD=forDevelopmentItCouldBeADummy
-    ```
+        ```bash
+        IP_ADDRESS_VM=yourIpAddress
+        # There is an env-variable for your IP-Address in the Allowed-Hosts-Section in truck_signs_designs > settings > base.py. 
+        # If you do not need it then earase it there and here.
+        SUPERUSER_USERNAME=yourSuperuserName
+        SUPERUSER_EMAIL=yourSuperuserMail
+        SUPERUSER_PASSWORD=yourSuperuserPassword
+        SECRET_KEY=configSeeBelow
+        DB_NAME=trucksigns_db
+        DB_USER=trucksigns_user
+        DB_PASSWORD=supertrucksignsuser!
+        # If you don not want to name your database-container "truck_signs_db" you have to change the host name also in the entrypoint.sh.
+        DB_HOST=truck_signs_db
+        DB_PORT=5432
+        STRIPE_PUBLISHABLE_KEY=forDevelopmentItCouldBeADummy
+        STRIPE_SECRET_KEY=forDevelopmentItCouldBeADummy
+        EMAIL_HOST_USER=forDevelopmentItCouldBeADummy
+        EMAIL_HOST_PASSWORD=forDevelopmentItCouldBeADummy
+        ```
 
     * The `SECRET_KEY` is the django secret key
 
@@ -188,8 +188,8 @@ This section provides a fast and **minimal setup guide** for using the tools in 
     docker build -t truck_signs .
     ```
 
-    * *-t*: This flag defines the name or tag of the container image.
-    * *.*: The dot indicates that the build context directory is the current directory. Docker looks for the Dockerfile in this directory.
+    * *-t* : This flag defines the name or tag of the container image.
+    * *.* : The dot indicates that the build context directory is the current directory. Docker looks for the Dockerfile in this directory.
 
 5. Create a **docker network** so that the App- and Database-Container can communicate:
 
@@ -221,13 +221,13 @@ This section provides a fast and **minimal setup guide** for using the tools in 
     postgres:13
     ```
 
-    * *-d*: Starts container in detached mode (runs as background process and does not block the terminal).
-    * *--name*: Names the container.
-    * *--network*: Assigns the container to a network. You should use the one you created under 5.
-    * *--env-file*: Path to the .env file where the environment variables are stored. In this projects it is in [truck_signs_designs > settings > .ev](#installation-and-preparation).
-    * *-v*: Bind-Mount for data persistence. Path to a directory on the host that stores the data from the database container to retain the data even if the container is deleted : path where the data ist stored on the database container.
-    * *--restart always*: Ensures that the container restarts automatically. Often the best choice for a database container because it minimizes outages and ensures a reliable database connection for connected applications.
-    * *postgres:13*: Official PostgreSQL Image, newest version.
+    * *-d* : Starts container in detached mode (runs as background process and does not block the terminal).
+    * *--name* : Names the container.
+    * *--network* : Assigns the container to a network. You should use the one you created under 5.
+    * *--env-file* : Path to the .env file where the environment variables are stored. In this projects it is in [truck_signs_designs > settings > .ev](#installation-and-preparation).
+    * *-v* : Bind-Mount for data persistence. Path to a directory on the host that stores the data from the database container to retain the data even if the container is deleted : path where the data ist stored on the database container.
+    * *--restart always* : Ensures that the container restarts automatically. Often the best choice for a database container because it minimizes outages and ensures a reliable database connection for connected applications.
+    * *postgres:13* : Official PostgreSQL Image, newest version.
 
 7. Run the **App-Container**:
 
@@ -248,7 +248,7 @@ This section provides a fast and **minimal setup guide** for using the tools in 
     * *--restart on failure* : Specifies that the container only restarts if it exits with an error (exit code not 0).
     * *truck_signs* : The name of the Docker image used for the container.
 
-8. Is everything fine?
+8. Check if everything is fine:
 
     * Get a **list of all running Docker containers**. If there was no error while the starting processes, you should find the app- and database-container there:
 
@@ -262,11 +262,11 @@ This section provides a fast and **minimal setup guide** for using the tools in 
         * <ins>If the status is not `Up`</ins>:  
         Have a look into the **logfiles** and do a little debugging:
 
-        ```bash
-        docker logs truck_signs_db  
-        # or  
-        docker logs truck_signs_web
-        ```
+            ```bash
+            docker logs truck_signs_db  
+            # or  
+            docker logs truck_signs_web
+            ```
 
 __NOTE:__ To create Truck vinyls with Truck logos in them, first create the __Category__ Truck Sign, and then the __Product__ (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
 
