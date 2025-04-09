@@ -190,6 +190,8 @@ This section provides a fast and **minimal setup guide** for using the tools in 
 
 1. The [entrypoint.sh](./entrypoint.sh) is a script that is automatically executed when a Docker container is started and handles typical startup commands or initializations.
 
+1. To create a superuser non-interactively the app workes with the [createsupe.py](./backend/management/commands/createsupe.py).
+
 1. Build the **container image for the app-container** using the Dockerfile:  
 
     ```bash
