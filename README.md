@@ -38,7 +38,7 @@ It was created as part of my **DevSecOps training** at the Developer Akademie.
 
 ## Signs for Trucks - a Truck Signs Api
 
-**Signs for Trucks** is an **backend application for an online store** to buy pre-designed vinyls with custom lines of letters (often call truck letterings). The store also allows clients to upload their own designs and to customize them on the website as well.  
+**Signs for Trucks** is an **backend application for an online store** to buy **pre-designed vinyls with custom lines of letters** (often call truck letterings). The store also allows clients to upload their own designs and to customize them on the website as well.  
   
 Aside from the vinyls that are the main product of the store, clients can also purchase **simple lettering vinyls** with no truck logo, a fire extinguisher vinyl, and/or a vinyl with only the truck unit number (or another number selected by the client).  
   
@@ -66,7 +66,9 @@ It is **no frontend** given!
 
 This section provides a fast and **minimal setup guide** for using the tools in this repository. For a more **in-depth understanding** and additional options, please refer to the [Usage](#usage) section.
 
-1. Clone the repo e.g. using an SSH-Key:
+0) [Fork](https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the project to your namespace, if you want to make changes or open a [Pull Request](https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
+
+1. [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) the project to your platform if you just want to use it:
 
     ```bash
     git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git
@@ -111,7 +113,7 @@ This section provides a fast and **minimal setup guide** for using the tools in 
     truck_signs
     ```
 
-1. Check if everything is fine:
+1. **Check if everything is fine**:
 
     * Get a **list of all running Docker containers**. If there was no error while the starting processes, you should find the app- and database-container there:
 
@@ -135,7 +137,9 @@ This section provides a fast and **minimal setup guide** for using the tools in 
 
 ### Installation and Preparation
 
-1. Clone the repo e.g. using an SSH-Key:
+0) [Fork](https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the project to your namespace, if you want to make changes or open a [Pull Request](https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
+
+1. [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) the project to your platform if you just want to use it:
 
     ```bash
     git clone git@github.com:SarahZimmermann-Schmutzler/truck_signs_api.git
@@ -146,6 +150,7 @@ This section provides a fast and **minimal setup guide** for using the tools in 
     * Create an `.env` file in [this](./truck_signs_designs/settings/) directory with the **variables shown below**:
 
         ```bash
+        cd truck_signs_designs/settings
         sudo nano .env
         ```
 
@@ -174,20 +179,12 @@ This section provides a fast and **minimal setup guide** for using the tools in 
 
       * To generate a new one have a look [here](https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django)
 
-    * **NOTE: Test data is required for testing purposes**
+    * **NOTE: Test data is here required for testing purposes**:
       * `STRIPE_PUBLISHABLE_KEY` and `STRIPE_SECRET_KEY`: The payment system [Stripe](https://stripe.com/) is prepared, but not connected.
 
       * `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD`: This are the credentials to send emails from the website when a client makes a purchase. This is currently disable, but the code to activate this can be found in views.py in the create order view as comments. Therefore, any valid email and password will work.
 
 ### Containerization with Docker
-
-1. Create a `.dockerignore` file with:
-
-    ```bash
-    .gitignore
-    .git/
-    __pycache__/
-    ```
 
 1. The [Dockerfile](./Dockerfile) is a text file that describes step by step how to build a Docker image – including the base image, installed software and configurations.
 
@@ -253,13 +250,13 @@ This section provides a fast and **minimal setup guide** for using the tools in 
     truck_signs
     ```
 
-    * You can find the explanations for **-d** to **--env-file** above.
+    * You can find the explanations for **-d** to **--env-file** the step above.
     * **-v $(pwd):/app** : Binds the the host's current working directory to the /app path in the container. This mirrors files and changes on the host directly into the container. This is helpful e.g. if you want to make code changes locally and see them immediately in the container.
     * **-p 8020:5000** : Publishes port 5000 of the container to port 8020 of the host. Applications on the host can access the container using localhost:8020 (or the host IP address), while the application within the container listens on port 5000.
     * **--restart on failure** : Specifies that the container only restarts if it exits with an error (exit code not 0).
     * **truck_signs** : The name of the Docker image used for the container.
 
-1. Check if everything is fine:
+1. **Check if everything is fine**:
 
     * Get a **list of all running Docker containers**. If there was no error while the starting processes, you should find the app- and database-container there:
 
@@ -280,4 +277,4 @@ This section provides a fast and **minimal setup guide** for using the tools in 
             ```
 
 > [!NOTE]
-> To create Truck vinyls with Truck logos in them, first create the **Category** Truck Sign, and then the **Product** (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
+> To **create Truck vinyls with Truck logos** in them, first create the *Category* Truck Sign, and then the *Product* (can have any name). This is to make sure the frontend retrieves the Truck vinyls for display in the Product Grid as it only fetches the products of the category Truck Sign.
