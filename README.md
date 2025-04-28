@@ -1,6 +1,6 @@
 <div align="center">
 
-![Truck Signs](./screenshots/Truck_Signs_logo.png)
+![Truck Signs](https://raw.githubusercontent.com/SarahZimmermann-Schmutzler/truck_signs_api/main/screenshots/Truck_Signs_logo.png)
 
 # Containerization of a server application - Signs for Trucks
 
@@ -51,16 +51,16 @@ It is **no frontend** given!
 
 ### Mobile View
 
-![alt text](./screenshots/Admin_Panel_View_Mobile.png) ![alt text](./screenshots/Admin_Panel_View_Mobile_2.png)
-![alt text](./screenshots/Admin_Panel_View_Mobile_3.png)
+![alt text](https://raw.githubusercontent.com/SarahZimmermann-Schmutzler/truck_signs_api/main/screenshots/Admin_Panel_View_Mobile.png) ![alt text](https://raw.githubusercontent.com/SarahZimmermann-Schmutzler/truck_signs_api/main/screenshots/Admin_Panel_View_Mobile_2.png)
+![alt text](https://raw.githubusercontent.com/SarahZimmermann-Schmutzler/truck_signs_api/main/screenshots/Admin_Panel_View_Mobile_3.png)
 
 ### Desktop View
 
-![alt text](./screenshots/Admin_Panel_View.png)
+![alt text](https://raw.githubusercontent.com/SarahZimmermann-Schmutzler/truck_signs_api/main/screenshots/Admin_Panel_View.png)
 
-![alt text](./screenshots/Admin_Panel_View_2.png)
+![alt text](https://raw.githubusercontent.com/SarahZimmermann-Schmutzler/truck_signs_api/main/screenshots/Admin_Panel_View_2.png)
 
-![alt text](./screenshots/Admin_Panel_View_3.png)
+![alt text](https://raw.githubusercontent.com/SarahZimmermann-Schmutzler/truck_signs_api/main/screenshots/Admin_Panel_View_3.png)
 
 ## Quickstart
 
@@ -147,7 +147,7 @@ This section provides a fast and **minimal setup guide** for using the tools in 
 
 2. Configure the **environment variables**:
 
-    * Create an `.env` file in [this](./truck_signs_designs/settings/) directory with the **variables shown below**:
+    * Create an `.env` file in [this](https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/tree/main/truck_signs_designs/settings) directory with the **variables shown below**:
 
         ```bash
         cd truck_signs_designs/settings
@@ -173,7 +173,7 @@ This section provides a fast and **minimal setup guide** for using the tools in 
         EMAIL_HOST_PASSWORD=forDevelopmentItCouldBeADummy
         ```
 
-    * The other variables from the [env example file](./truck_signs_designs/settings/simple_env_config.env) are not suitable for the purpose shown in this repository.
+    * The other variables from the [env example file](https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/truck_signs_designs/settings/simple_env_config.env) are not suitable for the purpose shown in this repository.
 
     * The `SECRET_KEY` is the django secret key.
 
@@ -186,11 +186,11 @@ This section provides a fast and **minimal setup guide** for using the tools in 
 
 ### Containerization with Docker
 
-1. The [Dockerfile](./Dockerfile) is a text file that describes step by step how to build a Docker image – including the base image, installed software and configurations.
+1. The [Dockerfile](https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/Dockerfile) is a text file that describes step by step how to build a Docker image – including the base image, installed software and configurations.
 
-1. The [entrypoint.sh](./entrypoint.sh) is a script that is automatically executed when a Docker container is started and handles typical startup commands or initializations.
+1. The [entrypoint.sh](https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/entrypoint.sh) is a script that is automatically executed when a Docker container is started and handles typical startup commands or initializations.
 
-1. To create a superuser non-interactively the app workes with the [createsupe.py](./backend/management/commands/createsupe.py).
+1. To create a superuser non-interactively the app workes with the [createsupe.py](https://github.com/SarahZimmermann-Schmutzler/truck_signs_api/blob/main/backend/management/commands/createsupe.py).
 
 1. Build the **container image for the app-container** using the Dockerfile:  
 
